@@ -73,6 +73,23 @@ React Native에서 스크롤 기능을 구현할 때는 주로 ScrollView와 Fla
 - ScrollView는 모든 자식 컴포넌트를 한 번에 렌더링하는 컴포넌트입니다. 작은 양의 콘텐츠를 스크롤할 때 적합하며, 모든 항목을 메모리에 한 번에 로드합니다.
 - 주의할 점은 스크롤 뷰가 제대로 작동하기 위해서는 반드시 높이가 제한되어야 한다는 것입니다. 즉, 부모 컴포넌트에 flex: 1과 같은 높이 제한 스타일을 적용해야 합니다.
 
+#### 주의사항
+
+- ScrollView 컴포넌트 style에 `flex: 1` 을 사용하면 스크롤 이동이 원활하지 않을 수 있습니다.
+- 내부 요소가 꽉 채워지게끔 하려면 아래처럼 너비를 지정할 수 있습니다.
+
+```jsx
+import { Dimensions } from 'react-native'
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+
+const styles = StyleSheet.create({
+  item: {
+    width: SCREEN_WIDTH, // 화면 전체 너비 지정
+  },
+})
+```
+
 ```jsx
 <ScrollView>
   {items.map((item) => (
@@ -94,8 +111,10 @@ const items = [
   { id: '1', name: '노트북', price: 1000 },
   { id: '2', name: '스마트폰', price: 800 },
 ]
+```
 
-;<FlatList
+```jsx
+<FlatList
   data={items}
   renderItem={({ item }) => (
     <View>
@@ -114,7 +133,9 @@ const items = [
 
 데이터 렌더링 시 항상 성능과 사용자 경험을 고려하여 적절한 컴포넌트를 선택하는 것이 중요합니다.
 
-# Expo API 활용하기
+---
+
+# API 활용하기
 
 https://docs.expo.dev/versions/latest
 
@@ -127,7 +148,7 @@ https://docs.expo.dev/versions/latest
 
 #### 일부 메서드
 
-- `requestForegroundPermissionsAsync()`: 위치 정보 접근 권한을 요청합니다.
+- `requestForegroundPermissionsAsync()`: 앱이 포그라운드일 때만 위치 정보 접근 권한을 요청합니다.
 - `getLastKnownPositionAsync()`: 마지막으로 알려진 사용자의 위치 정보를 가져옵니다.
 - `watchPositionAsync()`: 사용자의 실시간 위치를 추적합니다.
 - `reverseGeocodeAsync()`: 위도와 경도로 해당 위치에 대한 주소 정보(국가, 행정구역, 도시 등)를 반환합니다.
