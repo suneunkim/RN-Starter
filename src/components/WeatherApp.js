@@ -27,16 +27,6 @@ export default function WeatherApp() {
 
   if (error) return <Text>Error: {error.message}</Text>
 
-  const icons = {
-    Clouds: 'cloudy',
-    Clear: 'day-sunny',
-    Atmosphere: 'cloudy-gusts',
-    Snow: 'snow',
-    Rain: 'rains',
-    Drizzle: 'rain',
-    Thunderstorm: 'lightning',
-  }
-
   return (
     <View style={styles.container}>
       <StatusBar></StatusBar>
@@ -44,7 +34,7 @@ export default function WeatherApp() {
         <Text style={styles.cityName}>{data?.city?.name}</Text>
       </View>
 
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 3, backgroundColor: 'gray', paddingTop: 40 }}>
         {isLoading ? (
           <View style={styles.loading}>
             <ActivityIndicator size='large' />
@@ -59,6 +49,7 @@ export default function WeatherApp() {
             {dailyForecast?.map((item, index) => (
               <View key={item?.dt_txt} style={styles.day}>
                 <Text style={styles.date}>{item?.dt_txt.split(' ')[0]}</Text>
+
                 <View
                   style={{
                     flexDirection: 'row',
@@ -68,10 +59,14 @@ export default function WeatherApp() {
                   }}
                 >
                   <Text style={styles.temp}>{Math.floor(item?.main?.temp)}°C</Text>
-                  <Fontisto
-                    name={icons[item?.weather[0].main]}
-                    size={68}
-                    style={{ marginLeft: 20 }}
+                  <Image
+                    source={{
+                      uri: `https://openweathermap.org/img/wn/${item.weather[0].icon.replace(
+                        'n',
+                        'd'
+                      )}@2x.png`,
+                    }}
+                    style={{ width: 100, height: 100 }} // 크기는 필요에 따라 조정
                   />
                 </View>
                 <Text style={styles.description}>{item?.weather[0]?.main}</Text>
@@ -94,7 +89,7 @@ export default function WeatherApp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'skyblue',
+    backgroundColor: '#F2F0E8',
   },
   loading: {
     flex: 1,
